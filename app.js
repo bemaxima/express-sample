@@ -5,13 +5,17 @@ const app = express();
 app.use(express.json());
 
 
-app.get('/foo', (req, res) => {
-  res.json({
-    ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'Unknown'
-  })
+app.get('/echo', (req, res) => {
+  const { method, url, protocol, rawHeaders } = req;
+  res.status(200).send({
+    method,
+    url,
+    protocol,
+    rawHeaders: JSON.stringify(rawHeaders)
+  });
 });
 
-app.post('/foo', (req, res) => {
+app.get('/ip', (req, res) => {
   res.json({
     ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'Unknown'
   })
